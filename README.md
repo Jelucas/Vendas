@@ -3,9 +3,9 @@
 
 
 
-**Data de Entrega:** 10/11/2015
-**Natureza do Trabalho:** em grupo de 3 alunos
-**Forma de Entrega:** em formato eletrônico.
+**Data de Entrega:** 10/11/2015  
+**Natureza do Trabalho:** em grupo de 3 alunos  
+**Forma de Entrega:** em formato eletrônico.  
 
 > A pasta do projeto deve conter os arquivos gerados pela ferramenta *Netbeans 7*.
 > A pasta que vai conter os arquivos do trabalho deve ser nomeada da seguinte forma:
