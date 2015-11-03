@@ -10,6 +10,11 @@ public class Pessoa {
     private String ddd;
     private String telefone;
 
+    public Pessoa(String cpf, String nome) {
+        this.cpf = cpf;
+        this.nome = nome;
+    }
+
     public String getCpf() {
         return cpf;
     }
