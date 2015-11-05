@@ -6,7 +6,7 @@ public class Produto {
     private int qtdDisponivel;
     private double precoUnit;
     private int estoqueMin;
-    //private ItemPedido itemPedido;
+    
 
     public Produto(int codigo, String descricao) {
         this.codigo = codigo;
@@ -44,12 +44,4 @@ public class Produto {
     public int getEstoqueMin() {
         return estoqueMin;
     }
-/*    public ItemPedido getItemPedido() {
-        return itemPedido;
-    }
-    
-    public void setItemPedido(ItemPedido i){
-        itemPedido = i;
-    }
-*/
 }
