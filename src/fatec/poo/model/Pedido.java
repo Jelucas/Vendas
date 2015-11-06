@@ -11,14 +11,22 @@ public class Pedido {
     private Vendedor vendedor;
     private ArrayList<ItemPedido> itens;
 
-    public Pedido(int numero, String dataEmissaoPedido, Cliente cliente, Vendedor vendedor) {
+    public Pedido(int numero, String dataEmissaoPedido) {
         this.numero = numero;
         this.dataEmissaoPedido = dataEmissaoPedido;
-        this.cliente = cliente;
-        this.vendedor = vendedor;
-        
+        itens = new ArrayList<ItemPedido>();
     }
 
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+        this.cliente.addPedidos(this);
+    }
+
+    public void setVendedor(Vendedor vendedor) {
+        this.vendedor = vendedor;
+        this.vendedor.addPedidos(this);
+    }
+    
     public void setDataPagto(String dataPagto) {
         this.dataPagto = dataPagto;
     }
@@ -45,7 +53,12 @@ public class Pedido {
     
     public void addItemPedido(ItemPedido item){
         itens.add(item);
-        //A fazer
+        item.setPedido(this);
+        this.cliente.addCompra(item.getProduto().getPrecoUnit() * item.getQtdeVendida());
+    }
+    
+    public ArrayList<ItemPedido> getItens(){
+        return itens;
     }
 
 }
