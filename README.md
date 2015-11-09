@@ -17,8 +17,3 @@
 
 ----------
 
-
-Autores
--------------
-
-![Estes são os autores do trabalho](http://i.imgur.com/OKg9LT4.png)
