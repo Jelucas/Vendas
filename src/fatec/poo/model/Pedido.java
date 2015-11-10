@@ -54,7 +54,7 @@ public class Pedido {
     public void addItemPedido(ItemPedido item){
         itens.add(item);
         item.setPedido(this);
-        this.cliente.addCompra(item.getProduto().getPrecoUnit() * item.getQtdeVendida());
+        cliente.addCompra(item.getProduto().getPrecoUnit() * item.getQtdeVendida());
     }
     
     public ArrayList<ItemPedido> getItens(){
