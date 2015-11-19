@@ -6,6 +6,10 @@
 
 package fatec.poo.view;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
+
 /**
  *
  * @author julio
@@ -17,6 +21,7 @@ public class GuiVendedor extends javax.swing.JFrame {
      */
     public GuiVendedor() {
         initComponents();
+        setIcon();
     }
 
     /**
@@ -56,7 +61,6 @@ public class GuiVendedor extends javax.swing.JFrame {
         catch (Exception e){ 
         }
         jLabel8 = new javax.swing.JLabel();
-        txtLimCred = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         txtTaxaComissao = new javax.swing.JTextField();
         btnConsultar = new javax.swing.JButton();
@@ -64,6 +68,7 @@ public class GuiVendedor extends javax.swing.JFrame {
         btnAlterar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
+        txtSalBase = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastro de Vendedor");
@@ -98,9 +103,9 @@ public class GuiVendedor extends javax.swing.JFrame {
 
         jLabel8.setText("Salário Base:");
 
-        txtLimCred.setEditable(false);
-
         jLabel9.setText("Taxa de Comissão:");
+
+        txtTaxaComissao.setEditable(false);
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/consultar.png"))); // NOI18N
         btnConsultar.setMnemonic('C');
@@ -124,6 +129,13 @@ public class GuiVendedor extends javax.swing.JFrame {
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/sair.png"))); // NOI18N
         btnSair.setMnemonic('S');
         btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
+
+        txtSalBase.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -162,8 +174,8 @@ public class GuiVendedor extends javax.swing.JFrame {
                                             .addComponent(jLabel7)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                                         .addGroup(layout.createSequentialGroup()
-                                            .addComponent(txtLimCred, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(txtSalBase)
+                                            .addGap(45, 45, 45)
                                             .addComponent(jLabel9)
                                             .addGap(8, 8, 8)))
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -215,10 +227,10 @@ public class GuiVendedor extends javax.swing.JFrame {
                     .addComponent(ftxtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtLimCred, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
                     .addComponent(jLabel9)
-                    .addComponent(txtTaxaComissao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTaxaComissao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSalBase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConsultar)
@@ -231,6 +243,10 @@ public class GuiVendedor extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnSairActionPerformed
 
     /**
      * @param args the command line arguments
@@ -288,9 +304,15 @@ public class GuiVendedor extends javax.swing.JFrame {
     private javax.swing.JTextField txtCidade;
     private javax.swing.JTextField txtDDD;
     private javax.swing.JTextField txtEndereco;
-    private javax.swing.JTextField txtLimCred;
     private javax.swing.JTextField txtNome;
+    private javax.swing.JTextField txtSalBase;
     private javax.swing.JTextField txtTaxaComissao;
     private javax.swing.JTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
+
+    private void setIcon() {
+        URL url = this.getClass().getResource("/fatec/poo/view/icon/vendedor.png");
+        Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
+        this.setIconImage(imagemTitulo);
+    }
 }

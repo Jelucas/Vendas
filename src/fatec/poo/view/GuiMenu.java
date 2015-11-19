@@ -6,6 +6,10 @@
 
 package fatec.poo.view;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
+
 /**
  *
  * @author julio
@@ -17,6 +21,7 @@ public class GuiMenu extends javax.swing.JFrame {
      */
     public GuiMenu() {
         initComponents();
+        setIcon();
     }
 
     /**
@@ -39,23 +44,53 @@ public class GuiMenu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Controle de Vendas");
 
+        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/incluir.png"))); // NOI18N
         jMenu1.setText("Cadastros");
 
+        jMenuItemCadClientes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
+        jMenuItemCadClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/cliente.png"))); // NOI18N
         jMenuItemCadClientes.setText("Clientes");
+        jMenuItemCadClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCadClientesActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItemCadClientes);
 
+        jMenuItemCadVendedores.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_MASK));
+        jMenuItemCadVendedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/vendedor.png"))); // NOI18N
         jMenuItemCadVendedores.setText("Vendedores");
+        jMenuItemCadVendedores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCadVendedoresActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItemCadVendedores);
 
+        jMenuItemCadProdutos.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_MASK));
+        jMenuItemCadProdutos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/produto.png"))); // NOI18N
         jMenuItemCadProdutos.setText("Produtos");
+        jMenuItemCadProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemCadProdutosActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItemCadProdutos);
 
         jMenuBar1.add(jMenu1);
 
+        jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pedido.png"))); // NOI18N
         jMenu2.setText("Pedido");
         jMenu2.setToolTipText("");
 
+        jMenuItemEmitirPedido.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK));
+        jMenuItemEmitirPedido.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/produto.png"))); // NOI18N
         jMenuItemEmitirPedido.setText("Emitir Pedido");
+        jMenuItemEmitirPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemEmitirPedidoActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItemEmitirPedido);
 
         jMenuBar1.add(jMenu2);
@@ -75,6 +110,22 @@ public class GuiMenu extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItemCadClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadClientesActionPerformed
+        new GuiCliente().setVisible(true);
+    }//GEN-LAST:event_jMenuItemCadClientesActionPerformed
+
+    private void jMenuItemCadVendedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadVendedoresActionPerformed
+        new GuiVendedor().setVisible(true);
+    }//GEN-LAST:event_jMenuItemCadVendedoresActionPerformed
+
+    private void jMenuItemCadProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCadProdutosActionPerformed
+        new GuiProduto().setVisible(true);
+    }//GEN-LAST:event_jMenuItemCadProdutosActionPerformed
+
+    private void jMenuItemEmitirPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemEmitirPedidoActionPerformed
+        new GuiPedido().setVisible(true);
+    }//GEN-LAST:event_jMenuItemEmitirPedidoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -120,4 +171,10 @@ public class GuiMenu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemCadVendedores;
     private javax.swing.JMenuItem jMenuItemEmitirPedido;
     // End of variables declaration//GEN-END:variables
+
+    private void setIcon() {
+        URL url = this.getClass().getResource("/fatec/poo/view/icon/principal.png");
+        Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
+        this.setIconImage(imagemTitulo);
+    }
 }
