@@ -32,8 +32,6 @@ public class GuiCliente extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        txtNome = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
         ftxtCPF = new javax.swing.JFormattedTextField();
         try{ 
             javax.swing.text.MaskFormatter cpf = new javax.swing.text.MaskFormatter("###.###.###-##"); 
@@ -41,10 +39,12 @@ public class GuiCliente extends javax.swing.JFrame {
         } 
         catch (Exception e){ 
         }
+        jLabel2 = new javax.swing.JLabel();
+        txtNome = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtEndereco = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtEndereco1 = new javax.swing.JTextField();
+        txtCidade = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         cmbUF = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
@@ -61,21 +61,21 @@ public class GuiCliente extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         txtLimCred = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
         lblLimDisp = new javax.swing.JLabel();
+        btnConsultar = new javax.swing.JButton();
+        btnIncluir = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnSair = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastro de Cliente");
 
         jLabel1.setText("CPF:");
 
-        txtNome.setEditable(false);
-
         jLabel2.setText("Nome:");
+
+        txtNome.setEditable(false);
 
         jLabel3.setText("Endereço:");
 
@@ -83,7 +83,7 @@ public class GuiCliente extends javax.swing.JFrame {
 
         jLabel4.setText("Cidade:");
 
-        txtEndereco1.setEditable(false);
+        txtCidade.setEditable(false);
 
         jLabel5.setText("UF:");
 
@@ -105,30 +105,30 @@ public class GuiCliente extends javax.swing.JFrame {
 
         jLabel9.setText("Limite Disponível:");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/consultar.png"))); // NOI18N
-        jButton1.setMnemonic('C');
-        jButton1.setText("Consultar");
-
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/incluir.png"))); // NOI18N
-        jButton2.setMnemonic('I');
-        jButton2.setText("Incluir");
-        jButton2.setEnabled(false);
-
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/alterar.png"))); // NOI18N
-        jButton3.setMnemonic('A');
-        jButton3.setText("Alterar");
-        jButton3.setEnabled(false);
-
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/excluir.png"))); // NOI18N
-        jButton4.setMnemonic('E');
-        jButton4.setText("Excluir");
-        jButton4.setEnabled(false);
-
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/sair.png"))); // NOI18N
-        jButton5.setMnemonic('S');
-        jButton5.setText("Sair");
-
         lblLimDisp.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+
+        btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/consultar.png"))); // NOI18N
+        btnConsultar.setMnemonic('C');
+        btnConsultar.setText("Consultar");
+
+        btnIncluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/incluir.png"))); // NOI18N
+        btnIncluir.setMnemonic('I');
+        btnIncluir.setText("Incluir");
+        btnIncluir.setEnabled(false);
+
+        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/alterar.png"))); // NOI18N
+        btnAlterar.setMnemonic('A');
+        btnAlterar.setText("Alterar");
+        btnAlterar.setEnabled(false);
+
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/excluir.png"))); // NOI18N
+        btnExcluir.setMnemonic('E');
+        btnExcluir.setText("Excluir");
+        btnExcluir.setEnabled(false);
+
+        btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/sair.png"))); // NOI18N
+        btnSair.setMnemonic('S');
+        btnSair.setText("Sair");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -152,7 +152,7 @@ public class GuiCliente extends javax.swing.JFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(txtEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(txtEndereco1)
+                                    .addComponent(txtCidade)
                                     .addGap(18, 18, 18)
                                     .addComponent(jLabel5)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -176,19 +176,19 @@ public class GuiCliente extends javax.swing.JFrame {
                                         .addComponent(ftxtCEP, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton1)
+                        .addComponent(btnConsultar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)
+                        .addComponent(btnIncluir)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3)
+                        .addComponent(btnAlterar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton4)
+                        .addComponent(btnExcluir)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton5)))
+                        .addComponent(btnSair)))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2, jButton3, jButton4, jButton5});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAlterar, btnConsultar, btnExcluir, btnIncluir, btnSair});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -207,7 +207,7 @@ public class GuiCliente extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtEndereco1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5)
                     .addComponent(cmbUF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -226,11 +226,11 @@ public class GuiCliente extends javax.swing.JFrame {
                     .addComponent(lblLimDisp))
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
+                    .addComponent(btnConsultar)
+                    .addComponent(btnIncluir)
+                    .addComponent(btnAlterar)
+                    .addComponent(btnExcluir)
+                    .addComponent(btnSair))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
@@ -275,14 +275,14 @@ public class GuiCliente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnConsultar;
+    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnIncluir;
+    private javax.swing.JButton btnSair;
     private javax.swing.JComboBox cmbUF;
     private javax.swing.JFormattedTextField ftxtCEP;
     private javax.swing.JFormattedTextField ftxtCPF;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -293,9 +293,9 @@ public class GuiCliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel lblLimDisp;
+    private javax.swing.JTextField txtCidade;
     private javax.swing.JTextField txtDDD;
     private javax.swing.JTextField txtEndereco;
-    private javax.swing.JTextField txtEndereco1;
     private javax.swing.JTextField txtLimCred;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtTelefone;
