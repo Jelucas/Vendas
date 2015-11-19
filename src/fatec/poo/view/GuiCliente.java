@@ -61,23 +61,29 @@ public class GuiCliente extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         txtLimCred = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        txtLimDisp = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        lblLimDisp = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastro de Cliente");
 
         jLabel1.setText("CPF:");
 
+        txtNome.setEditable(false);
+
         jLabel2.setText("Nome:");
 
         jLabel3.setText("Endereço:");
 
+        txtEndereco.setEditable(false);
+
         jLabel4.setText("Cidade:");
+
+        txtEndereco1.setEditable(false);
 
         jLabel5.setText("UF:");
 
@@ -85,9 +91,17 @@ public class GuiCliente extends javax.swing.JFrame {
 
         jLabel6.setText("Telefone:");
 
+        txtDDD.setEditable(false);
+
+        txtTelefone.setEditable(false);
+
         jLabel7.setText("CEP:");
 
+        ftxtCEP.setEditable(false);
+
         jLabel8.setText("Limite de Crédito:");
+
+        txtLimCred.setEditable(false);
 
         jLabel9.setText("Limite Disponível:");
 
@@ -98,18 +112,23 @@ public class GuiCliente extends javax.swing.JFrame {
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/incluir.png"))); // NOI18N
         jButton2.setMnemonic('I');
         jButton2.setText("Incluir");
+        jButton2.setEnabled(false);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/alterar.png"))); // NOI18N
         jButton3.setMnemonic('A');
         jButton3.setText("Alterar");
+        jButton3.setEnabled(false);
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/excluir.png"))); // NOI18N
         jButton4.setMnemonic('E');
         jButton4.setText("Excluir");
+        jButton4.setEnabled(false);
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/sair.png"))); // NOI18N
         jButton5.setMnemonic('S');
         jButton5.setText("Sair");
+
+        lblLimDisp.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,12 +150,6 @@ public class GuiCliente extends javax.swing.JFrame {
                             .addComponent(ftxtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(txtLimCred, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel9)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtLimDisp, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(txtEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(txtEndereco1)
@@ -145,13 +158,22 @@ public class GuiCliente extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(cmbUF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(txtDDD, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel7)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(ftxtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(txtDDD, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel7)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(txtLimCred, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel9)
+                                            .addGap(8, 8, 8)))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(lblLimDisp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(ftxtCEP, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jButton1)
@@ -200,8 +222,8 @@ public class GuiCliente extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtLimCred, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(txtLimDisp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
+                    .addComponent(jLabel9)
+                    .addComponent(lblLimDisp))
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -211,6 +233,8 @@ public class GuiCliente extends javax.swing.JFrame {
                     .addComponent(jButton5))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {ftxtCEP, lblLimDisp});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -268,11 +292,11 @@ public class GuiCliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel lblLimDisp;
     private javax.swing.JTextField txtDDD;
     private javax.swing.JTextField txtEndereco;
     private javax.swing.JTextField txtEndereco1;
     private javax.swing.JTextField txtLimCred;
-    private javax.swing.JTextField txtLimDisp;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtTelefone;
     // End of variables declaration//GEN-END:variables
