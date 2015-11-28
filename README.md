@@ -1,9 +1,9 @@
-2º. Trabalho de POO
+3º. Trabalho de POO
 ===================
 
 
 
-**Data de Entrega:** 24/11/2015  
+**Data de Entrega:** 10/12/2015  
 **Natureza do Trabalho:** em grupo de 3 alunos  
 **Forma de Entrega:** em formato eletrônico.  
 
