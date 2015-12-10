@@ -6,9 +6,8 @@ public class ItemPedido {
     private Pedido pedido;
     private Produto produto;
 
-    public ItemPedido(int qtdeVendida) {
-        numeroItem = pedido.getItens().size() + 1; //Pega a quatidade de itens do ArrayList e soma 1
-        //VERIFICAR caso seja excluido um item no meio ou ínicio do pedido.
+    public ItemPedido(int numeroItem,int qtdeVendida) {
+        this.numeroItem = numeroItem;
         this.qtdeVendida = qtdeVendida;
     }
 
@@ -18,8 +17,7 @@ public class ItemPedido {
 
     public void setProduto(Produto p) {
         produto = p;
-        produto.setQtdDisponivel(produto.getQtdDisponivel() - qtdeVendida); //Retirada do "estoque"
-        //E SE NÃO TIVER NO ESTOQUE???
+        produto.setQtdDisponivel(produto.getQtdDisponivel() - qtdeVendida);
     }
 
     public int getNumeroItem() {

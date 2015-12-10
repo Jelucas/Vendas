@@ -5,9 +5,27 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.dao.Conexao;
+import fatec.poo.dao.DaoCliente;
+import fatec.poo.dao.DaoPedido;
+import fatec.poo.dao.DaoProduto;
+import fatec.poo.dao.DaoVendedor;
+import fatec.poo.dao.DaoItemPedido;
+import fatec.poo.model.Cliente;
+import fatec.poo.model.ItemPedido;
+import fatec.poo.model.Pedido;
+import fatec.poo.model.Produto;
+import fatec.poo.model.Vendedor;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.plaf.basic.BasicListUI;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -68,14 +86,14 @@ public class GuiPedido extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         txtCodProd = new javax.swing.JTextField();
-        btnPesqVendedor1 = new javax.swing.JButton();
-        lblNomeVendedor1 = new javax.swing.JLabel();
+        btnPesqProduto = new javax.swing.JButton();
+        lblDescricaoProduto = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtQtdeVend = new javax.swing.JTextField();
         btnAddItem = new javax.swing.JButton();
         btnRmvItem = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblProdutos = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         lblTotalPedido = new javax.swing.JLabel();
@@ -85,16 +103,35 @@ public class GuiPedido extends javax.swing.JFrame {
         btnSair = new javax.swing.JButton();
         btnIncluir = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Emitir Pedido");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Pedido"));
 
         jLabel1.setText("Número do Pedido:");
 
+        txtNumPed.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtNumPedFocusLost(evt);
+            }
+        });
+
         jLabel2.setText("Data do Pedido:");
 
-        ftxtDataPed.setEditable(false);
+        ftxtDataPed.setEnabled(false);
+        ftxtDataPed.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                ftxtDataPedFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -127,10 +164,15 @@ public class GuiPedido extends javax.swing.JFrame {
 
         jLabel3.setText("CPF do Cliente:");
 
-        ftxtCPFCliente.setEditable(false);
+        ftxtCPFCliente.setEnabled(false);
 
         btnPesqCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/consultar.png"))); // NOI18N
         btnPesqCliente.setEnabled(false);
+        btnPesqCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesqClienteActionPerformed(evt);
+            }
+        });
 
         lblNomeCliente.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
@@ -170,10 +212,15 @@ public class GuiPedido extends javax.swing.JFrame {
 
         jLabel4.setText("CPF do Vendedor:");
 
-        ftxtCPFVendedor.setEditable(false);
+        ftxtCPFVendedor.setEnabled(false);
 
         btnPesqVendedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/consultar.png"))); // NOI18N
         btnPesqVendedor.setEnabled(false);
+        btnPesqVendedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesqVendedorActionPerformed(evt);
+            }
+        });
 
         lblNomeVendedor.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
@@ -213,33 +260,48 @@ public class GuiPedido extends javax.swing.JFrame {
 
         jLabel5.setText("Código do Produto:");
 
-        txtCodProd.setEditable(false);
+        txtCodProd.setEnabled(false);
 
-        btnPesqVendedor1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/consultar.png"))); // NOI18N
-        btnPesqVendedor1.setEnabled(false);
+        btnPesqProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/consultar.png"))); // NOI18N
+        btnPesqProduto.setEnabled(false);
+        btnPesqProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesqProdutoActionPerformed(evt);
+            }
+        });
 
-        lblNomeVendedor1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        lblDescricaoProduto.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         jLabel6.setText("Qtde. Vendida:");
 
-        txtQtdeVend.setEditable(false);
+        txtQtdeVend.setEnabled(false);
 
         btnAddItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add_item.png"))); // NOI18N
         btnAddItem.setMnemonic('A');
         btnAddItem.setText("Adicionar Item");
         btnAddItem.setEnabled(false);
+        btnAddItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddItemActionPerformed(evt);
+            }
+        });
 
         btnRmvItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/rmv_item.png"))); // NOI18N
         btnRmvItem.setMnemonic('R');
         btnRmvItem.setText("Remover Item");
         btnRmvItem.setEnabled(false);
+        btnRmvItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRmvItemActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Código", "Descrição", "Preço Unitário", "Quantidade", "Subtotal"
+                "Código", "Descrição", "Quantidade", "Preço Unitário", "Subtotal"
             }
         ) {
             Class[] types = new Class [] {
@@ -257,15 +319,23 @@ public class GuiPedido extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        tblProdutos.getTableHeader().setReorderingAllowed(false);
+        tblProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProdutosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblProdutos);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("Total do Pedido:");
 
         jLabel8.setText("Qtde. de Itens:");
 
+        lblTotalPedido.setText("0");
         lblTotalPedido.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
+        lblQtdeItens.setText("0");
         lblQtdeItens.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -283,7 +353,7 @@ public class GuiPedido extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtCodProd, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnPesqVendedor1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnPesqProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -293,7 +363,7 @@ public class GuiPedido extends javax.swing.JFrame {
                                 .addComponent(btnAddItem)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnRmvItem))
-                            .addComponent(lblNomeVendedor1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(lblDescricaoProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -315,11 +385,11 @@ public class GuiPedido extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnPesqVendedor1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnPesqProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
                         .addComponent(txtCodProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblNomeVendedor1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblDescricaoProduto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -327,8 +397,8 @@ public class GuiPedido extends javax.swing.JFrame {
                     .addComponent(btnAddItem)
                     .addComponent(btnRmvItem))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel7)
                     .addComponent(lblTotalPedido))
@@ -364,6 +434,11 @@ public class GuiPedido extends javax.swing.JFrame {
         btnIncluir.setMnemonic('I');
         btnIncluir.setText("Incluir");
         btnIncluir.setEnabled(false);
+        btnIncluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIncluirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -372,26 +447,28 @@ public class GuiPedido extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnIncluir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnAlterar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnExcluir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnSair)
-                .addGap(179, 179, 179))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnIncluir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnAlterar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnExcluir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSair)
+                        .addGap(176, 176, 176))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(45, 45, 45)
+                .addGap(39, 39, 39)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -405,15 +482,256 @@ public class GuiPedido extends javax.swing.JFrame {
                     .addComponent(btnAlterar)
                     .addComponent(btnExcluir)
                     .addComponent(btnSair))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
-        dispose();
+        formWindowClosing(null);
     }//GEN-LAST:event_btnSairActionPerformed
+
+    private void ftxtDataPedFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ftxtDataPedFocusLost
+        String s = ftxtDataPed.getText();
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        df.setLenient(false); // aqui o pulo do gato  
+        try {
+            // data válida
+            df.parse(s);
+            ftxtDataPed.setEnabled(false);
+            ftxtCPFCliente.setEnabled(true);
+            txtQtdeVend.setEnabled(false);
+            btnPesqCliente.setEnabled(true);
+
+            ftxtCPFCliente.requestFocus();
+
+            ftxtCPFCliente.setText("14426334764");//APAGAR
+            ftxtCPFVendedor.setText("15622225973");//APAGAR
+        } catch (ParseException ex) {
+            // data inválida
+            JOptionPane.showMessageDialog(null, "Informe uma data válida", "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_ftxtDataPedFocusLost
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        conexao = new Conexao("JEFFERSON", "jefferson");
+        conexao.setDriver("oracle.jdbc.driver.OracleDriver");
+        conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        daoPedido = new DaoPedido(conexao.conectar());
+        daoCliente = new DaoCliente(conexao.conectar());
+        daoVendedor = new DaoVendedor(conexao.conectar());
+        daoProduto = new DaoProduto(conexao.conectar());
+
+        txtNumPed.requestFocus();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
+        pedido = new Pedido(Integer.parseInt(txtNumPed.getText()), ftxtDataPed.getText());
+        pedido.setCliente(cliente);
+        pedido.setVendedor(vendedor);
+        pedido.setStatus(0); //Em aberto
+        daoPedido.inserir(pedido);
+
+        limparCampos();
+        btnIncluir.setEnabled(false);
+        txtNumPed.setEnabled(true);
+        ftxtDataPed.setEnabled(false);
+        ftxtCPFCliente.setEnabled(false);
+        ftxtCPFVendedor.setEnabled(false);
+        txtCodProd.setEnabled(false);
+        txtQtdeVend.setEnabled(false);
+        btnAddItem.setEnabled(false);
+        btnRmvItem.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        DefaultTableModel tabelaProdutos = (DefaultTableModel) tblProdutos.getModel();
+        tabelaProdutos.setNumRows(0);
+    }//GEN-LAST:event_btnIncluirActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        if (tblProdutos.getRowCount() > 0) {
+            JOptionPane.showMessageDialog(null, "Remova todos os itens do pedido antes de cancelá-lo!", "Erro", JOptionPane.ERROR_MESSAGE);
+        } else {
+            conexao.fecharConexao();
+            dispose();
+        }
+    }//GEN-LAST:event_formWindowClosing
+
+    private void txtNumPedFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNumPedFocusLost
+        pedido = null;
+        if (!campoNumerico(txtNumPed.getText())) {
+            JOptionPane.showMessageDialog(rootPane, "Digite somente números!");
+            txtNumPed.setText("");
+            txtNumPed.requestFocus();
+        } else {
+            pedido = daoPedido.consultar(Integer.parseInt(txtNumPed.getText()));
+
+            if (pedido == null) { //Se o pedido não existir
+                ftxtDataPed.setEnabled(true);
+
+                btnIncluir.setEnabled(true);
+                btnPesqVendedor.setEnabled(false);
+                btnAlterar.setEnabled(false);
+                btnExcluir.setEnabled(false);
+
+                txtNumPed.setEnabled(false);
+
+                Date hoje = new Date();
+                SimpleDateFormat df;
+                df = new SimpleDateFormat("dd/MM/yyyy");
+                ftxtDataPed.setText(df.format(hoje));
+                ftxtDataPed.requestFocus();
+            } else { //Se o Pedido já existir
+                txtNumPed.setText(String.valueOf(pedido.getNumero()));
+                txtNumPed.setEnabled(false);
+                ftxtDataPed.setText(pedido.getDataEmissaoPedido());
+                ftxtDataPed.setEnabled(false);
+                ftxtCPFCliente.setText(pedido.getCliente().getCpf());
+                lblNomeCliente.setText(pedido.getCliente().getNome());
+
+                ftxtCPFVendedor.setText(pedido.getVendedor().getCpf());
+                lblNomeVendedor.setText(pedido.getVendedor().getNome());
+            }
+        }
+    }//GEN-LAST:event_txtNumPedFocusLost
+
+    private void btnPesqClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesqClienteActionPerformed
+        cliente = null;
+        cliente = daoCliente.consultar(ftxtCPFCliente.getText().replace(".", "").replace("-", ""));
+
+        if (cliente == null) {
+            JOptionPane.showMessageDialog(null, "Cliente não encontrado. Re-digite o CPF.", "ERRO", JOptionPane.ERROR_MESSAGE);
+            lblNomeCliente.setText("");
+            ftxtCPFCliente.setText("");
+            ftxtCPFCliente.requestFocus();
+        } else {
+            lblNomeCliente.setText(cliente.getNome());
+            ftxtCPFCliente.setEnabled(false);
+            btnPesqCliente.setEnabled(false);
+            ftxtCPFVendedor.setEnabled(true);
+            btnPesqVendedor.setEnabled(true);
+            ftxtCPFVendedor.requestFocus();
+        }
+
+    }//GEN-LAST:event_btnPesqClienteActionPerformed
+
+    private void btnPesqVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesqVendedorActionPerformed
+        vendedor = null;
+        vendedor = daoVendedor.consultar(ftxtCPFVendedor.getText().replace(".", "").replace("-", ""));
+
+        if (vendedor == null) {
+            JOptionPane.showMessageDialog(null, "Vendedor não encontrado. Re-digite o CPF.", "ERRO", JOptionPane.ERROR_MESSAGE);
+            lblNomeVendedor.setText("");
+            ftxtCPFVendedor.setText("");
+            ftxtCPFVendedor.requestFocus();
+        } else {
+            lblNomeVendedor.setText(vendedor.getNome());
+            txtCodProd.requestFocus();
+            ftxtCPFVendedor.setEnabled(false);
+            btnPesqVendedor.setEnabled(false);
+            btnPesqProduto.setEnabled(true);
+            txtCodProd.setEnabled(true);
+        }
+    }//GEN-LAST:event_btnPesqVendedorActionPerformed
+
+    private void btnPesqProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesqProdutoActionPerformed
+        produto = null;
+        produto = daoProduto.consultar(Integer.parseInt(txtCodProd.getText()));
+
+        if (produto == null) {
+            JOptionPane.showMessageDialog(null, "Produto não encontrado. Re-digite o código.", "ERRO", JOptionPane.ERROR_MESSAGE);
+            lblDescricaoProduto.setText("");
+            txtCodProd.setText("");
+            txtCodProd.requestFocus();
+        } else {
+            lblDescricaoProduto.setText(produto.getDescricao());
+            txtQtdeVend.setEnabled(true);
+            btnAddItem.setEnabled(true);
+            txtQtdeVend.requestFocus();
+        }
+    }//GEN-LAST:event_btnPesqProdutoActionPerformed
+
+    private void btnAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddItemActionPerformed
+        DefaultTableModel modTblProd;
+        modTblProd = (DefaultTableModel) tblProdutos.getModel();
+        produto = null;
+        if (!campoNumerico(txtCodProd.getText())) {
+            JOptionPane.showMessageDialog(rootPane, "Digite somente números válidos!");
+            txtCodProd.setText("");
+            txtCodProd.requestFocus();
+        } else {
+            produto = daoProduto.consultar(Integer.parseInt(txtCodProd.getText()));
+
+            if (!campoNumerico(txtQtdeVend.getText()) || Integer.parseInt(txtQtdeVend.getText()) < 1) {
+                JOptionPane.showMessageDialog(rootPane, "Digite somente números válidos!");
+                txtQtdeVend.setText("");
+                txtQtdeVend.requestFocus();
+            } else {
+                if (produto.getQtdDisponivel() < Integer.parseInt(txtQtdeVend.getText())) {
+                    JOptionPane.showMessageDialog(null, "Quantidade em estoque inferior à quantidade vendida. Re-digite a quantidade.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    txtQtdeVend.setText("");
+                    txtQtdeVend.requestFocus();
+                } else {
+                    item = new ItemPedido(Integer.parseInt(lblQtdeItens.getText()) + 1, Integer.parseInt(txtQtdeVend.getText()));
+                    item.setProduto(produto);
+                    item.setPedido(pedido);
+
+                    pedido.addItemPedido(item);
+                    if (item == null) {
+                        System.out.println("Item Nulão 2.1 ");
+                    }
+                    lblTotalPedido.setText(String.valueOf(Double.parseDouble(lblTotalPedido.getText()) + Double.parseDouble(txtQtdeVend.getText()) * produto.getPrecoUnit()));
+                    //lblQtdeItens.setText(String.valueOf(modTblProd.getRowCount() + 1));
+                    lblQtdeItens.setText(String.valueOf(Integer.parseInt(lblQtdeItens.getText()) + 1));
+
+                    //produto.setQtdDisponivel(produto.getQtdDisponivel() - Integer.parseInt(txtQtdeVend.getText()));
+                    if (produto.getQtdDisponivel() <= produto.getEstoqueMin()) {
+                        JOptionPane.showMessageDialog(null, "O produto está com estoque mínimo ou abaixo dele", "Aviso", JOptionPane.WARNING_MESSAGE);
+                    }
+                    if (item == null) {
+                        System.out.println("Item Nulão 3");
+                    } else {
+                        daoItemPedido.inserir(item);
+                    }
+
+                    String linha[] = {
+                        String.valueOf(produto.getCodigo()),
+                        produto.getDescricao(),
+                        txtQtdeVend.getText(),
+                        String.valueOf(produto.getPrecoUnit()),
+                        String.valueOf(Integer.parseInt(txtQtdeVend.getText()) * produto.getPrecoUnit())
+                    };
+                    modTblProd.addRow(linha);
+                    txtCodProd.setText("");
+                    txtCodProd.requestFocus();
+                    lblDescricaoProduto.setText("");
+                    txtQtdeVend.setText("");
+                    btnAddItem.setEnabled(false);
+                    btnRmvItem.setEnabled(false);
+                }
+            }
+        }
+    }//GEN-LAST:event_btnAddItemActionPerformed
+
+    private void btnRmvItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRmvItemActionPerformed
+        DefaultTableModel modTblProd;
+        modTblProd = (DefaultTableModel) tblProdutos.getModel();
+        produto = null;
+        produto = daoProduto.consultar(Integer.parseInt(String.valueOf(tblProdutos.getValueAt(tblProdutos.getSelectedRow(), 0))));
+        produto.setQtdDisponivel(produto.getQtdDisponivel() + Integer.parseInt(String.valueOf(tblProdutos.getValueAt(tblProdutos.getSelectedRow(), 2))));
+        lblTotalPedido.setText(String.valueOf(Double.parseDouble(lblTotalPedido.getText()) - Double.parseDouble(String.valueOf(tblProdutos.getValueAt(tblProdutos.getSelectedRow(), 4)))));
+        lblQtdeItens.setText(String.valueOf(Integer.parseInt(lblQtdeItens.getText()) - 1));
+        modTblProd.removeRow(tblProdutos.getSelectedRow());
+    }//GEN-LAST:event_btnRmvItemActionPerformed
+
+    private void tblProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProdutosMouseClicked
+        int linhaSelecionada = tblProdutos.getSelectedRow();
+        txtCodProd.setText(String.valueOf(tblProdutos.getValueAt(linhaSelecionada, 0)));
+        lblDescricaoProduto.setText(produto.getDescricao());
+        txtQtdeVend.setText(String.valueOf(tblProdutos.getValueAt(linhaSelecionada, 2)));
+        btnRmvItem.setEnabled(true);
+    }//GEN-LAST:event_tblProdutosMouseClicked
 
     /**
      * @param args the command line arguments
@@ -456,8 +774,8 @@ public class GuiPedido extends javax.swing.JFrame {
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnIncluir;
     private javax.swing.JButton btnPesqCliente;
+    private javax.swing.JButton btnPesqProduto;
     private javax.swing.JButton btnPesqVendedor;
-    private javax.swing.JButton btnPesqVendedor1;
     private javax.swing.JButton btnRmvItem;
     private javax.swing.JButton btnSair;
     private javax.swing.JFormattedTextField ftxtCPFCliente;
@@ -476,12 +794,12 @@ public class GuiPedido extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblDescricaoProduto;
     private javax.swing.JLabel lblNomeCliente;
     private javax.swing.JLabel lblNomeVendedor;
-    private javax.swing.JLabel lblNomeVendedor1;
     private javax.swing.JLabel lblQtdeItens;
     private javax.swing.JLabel lblTotalPedido;
+    private javax.swing.JTable tblProdutos;
     private javax.swing.JTextField txtCodProd;
     private javax.swing.JTextField txtNumPed;
     private javax.swing.JTextField txtQtdeVend;
@@ -492,4 +810,43 @@ public class GuiPedido extends javax.swing.JFrame {
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(imagemTitulo);
     }
+
+    private void limparCampos() {
+        txtNumPed.setText("");
+        txtCodProd.setText("");
+        txtQtdeVend.setText("");
+        ftxtCPFCliente.setText("");
+        ftxtCPFVendedor.setText("");
+        ftxtDataPed.setText("");
+        lblNomeCliente.setText("");
+        lblNomeVendedor.setText("");
+        lblDescricaoProduto.setText("");
+        lblTotalPedido.setText("");
+        lblQtdeItens.setText("");
+    }
+
+    private Conexao conexao = null;
+    private Cliente cliente = null;
+    private Vendedor vendedor = null;
+    private Produto produto = null;
+    private Pedido pedido = null;
+    private ItemPedido item = null;
+    private DaoCliente daoCliente = null;
+    private DaoVendedor daoVendedor = null;
+    private DaoProduto daoProduto = null;
+    private DaoPedido daoPedido = null;
+    private DaoItemPedido daoItemPedido = null;
+
+    private boolean campoNumerico(String campo) {
+        return campo.matches("[0-9]+");
+    }
+
+    private boolean isNulo(Object o) {
+        if (o == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

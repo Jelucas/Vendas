@@ -24,7 +24,9 @@ public class Produto {
     public void setEstoqueMin(int estoqueMin) {
         this.estoqueMin = estoqueMin;
     }
-
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
     public int getCodigo() {
         return codigo;
     }

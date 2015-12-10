@@ -3,22 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package fatec.poo.view;
 
+import fatec.poo.dao.Conexao;
+import fatec.poo.dao.DaoVendedor;
+import fatec.poo.model.Vendedor;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import java.util.InputMismatchException;
+import javax.swing.JOptionPane;
 
-/**
- *
- * @author julio
- */
 public class GuiVendedor extends javax.swing.JFrame {
 
-    /**
-     * Creates new form GuiVendedor
-     */
+    private Conexao conexao = null;
+    private DaoVendedor daoVendedor = null;
+    private Vendedor vendedor = null;
+
     public GuiVendedor() {
         initComponents();
         setIcon();
@@ -72,59 +73,93 @@ public class GuiVendedor extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastro de Vendedor");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setText("CPF:");
 
         jLabel2.setText("Nome:");
 
-        txtNome.setEditable(false);
+        txtNome.setEnabled(false);
 
         jLabel3.setText("Endereço:");
 
-        txtEndereco.setEditable(false);
+        txtEndereco.setEnabled(false);
 
         jLabel4.setText("Cidade:");
 
-        txtCidade.setEditable(false);
+        txtCidade.setEnabled(false);
 
         jLabel5.setText("UF:");
 
         cmbUF.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO" }));
+        cmbUF.setEnabled(false);
+        cmbUF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbUFActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Telefone:");
 
-        txtDDD.setEditable(false);
+        txtDDD.setEnabled(false);
 
-        txtTelefone.setEditable(false);
+        txtTelefone.setEnabled(false);
 
         jLabel7.setText("CEP:");
 
-        ftxtCEP.setEditable(false);
+        ftxtCEP.setEnabled(false);
 
         jLabel8.setText("Salário Base:");
 
         jLabel9.setText("Taxa de Comissão:");
 
-        txtTaxaComissao.setEditable(false);
+        txtTaxaComissao.setEnabled(false);
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/consultar.png"))); // NOI18N
         btnConsultar.setMnemonic('C');
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         btnIncluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/incluir.png"))); // NOI18N
         btnIncluir.setMnemonic('I');
         btnIncluir.setText("Incluir");
         btnIncluir.setEnabled(false);
+        btnIncluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIncluirActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/alterar.png"))); // NOI18N
         btnAlterar.setMnemonic('A');
         btnAlterar.setText("Alterar");
         btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/excluir.png"))); // NOI18N
         btnExcluir.setMnemonic('E');
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/sair.png"))); // NOI18N
         btnSair.setMnemonic('S');
@@ -135,7 +170,7 @@ public class GuiVendedor extends javax.swing.JFrame {
             }
         });
 
-        txtSalBase.setEditable(false);
+        txtSalBase.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -248,10 +283,178 @@ public class GuiVendedor extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        if (validaCPF(ftxtCPF.getText()) == true) {
+            vendedor = null;
+            vendedor = daoVendedor.consultar(ftxtCPF.getText().replace(".", "").replace("-", ""));
+
+            if (vendedor == null) {
+                ftxtCPF.setEnabled(false);
+                txtNome.setEnabled(true);
+                txtNome.requestFocus();
+                txtEndereco.setEnabled(true);
+                txtCidade.setEnabled(true);
+                ftxtCEP.setEnabled(true);
+                cmbUF.setEnabled(true);
+                txtDDD.setEnabled(true);
+                txtTelefone.setEnabled(true);
+                txtSalBase.setEnabled(true);
+                txtTaxaComissao.setEnabled(true);
+
+                btnConsultar.setEnabled(false);
+                btnIncluir.setEnabled(true);
+                btnAlterar.setEnabled(false);
+                btnExcluir.setEnabled(false);
+            } else {
+                txtNome.setText(vendedor.getNome());
+                txtEndereco.setText(vendedor.getEndereco());
+                txtCidade.setText(vendedor.getCidade());
+                cmbUF.setSelectedItem(vendedor.getUf());
+                ftxtCEP.setText(vendedor.getCep());
+                txtDDD.setText(vendedor.getDdd());
+                txtTelefone.setText(vendedor.getTelefone());
+                txtSalBase.setText(String.valueOf(vendedor.getSalarioBase()));
+                txtTaxaComissao.setText(String.valueOf(vendedor.getComissao()));
+
+                ftxtCPF.setEnabled(false);
+                txtNome.setEnabled(true);
+                txtEndereco.setEnabled(true);
+                txtCidade.setEnabled(true);
+                cmbUF.setEnabled(true);
+                ftxtCEP.setEnabled(true);
+                txtDDD.setEnabled(true);
+                txtTelefone.setEnabled(true);
+                txtSalBase.setEnabled(true);
+                txtTaxaComissao.setEnabled(true);
+
+                txtNome.requestFocus();
+
+                btnConsultar.setEnabled(false);
+                btnIncluir.setEnabled(false);
+                btnAlterar.setEnabled(true);
+                btnExcluir.setEnabled(true);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "CPF inválido", "ERRO", JOptionPane.ERROR_MESSAGE);
+            ftxtCPF.requestFocus();
+        }
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
+        vendedor = new Vendedor(ftxtCPF.getText().replace(".", "").replace("-", ""), txtNome.getText(), Double.parseDouble(txtSalBase.getText()));
+        vendedor.setEndereco(txtEndereco.getText());
+        vendedor.setCidade(txtCidade.getText());
+        vendedor.setUf(cmbUF.getSelectedItem().toString());
+        vendedor.setCep(ftxtCEP.getText().replace("-", ""));
+        vendedor.setDdd(txtDDD.getText());
+        vendedor.setTelefone(txtTelefone.getText());
+        vendedor.setComissao(Double.parseDouble(txtTaxaComissao.getText()));
+        daoVendedor.inserir(vendedor);
+
+        ftxtCPF.setText("");
+        txtNome.setText("");
+        btnIncluir.setEnabled(false);
+        ftxtCPF.setEnabled(true);
+        txtNome.setEnabled(false);
+        ftxtCPF.requestFocus();
+
+        btnConsultar.setEnabled(true);
+        btnIncluir.setEnabled(false);
+        txtEndereco.setEnabled(false);
+        txtCidade.setEnabled(false);
+        cmbUF.setEnabled(false);
+        ftxtCEP.setEnabled(false);
+        txtDDD.setEnabled(false);
+        txtTelefone.setEnabled(false);
+        txtTaxaComissao.setEnabled(false);
+        txtSalBase.setEnabled(false);
+       
+        
+        
+        
+        
+        limparCampos();
+    }//GEN-LAST:event_btnIncluirActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        conexao.fecharConexao();
+        dispose();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        conexao = new Conexao("JEFFERSON", "jefferson");
+        conexao.setDriver("oracle.jdbc.driver.OracleDriver");
+        conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        daoVendedor = new DaoVendedor((conexao.conectar()));
+    }//GEN-LAST:event_formWindowOpened
+
+    private void cmbUFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbUFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbUFActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        if (JOptionPane.showConfirmDialog(null, "Confirma a alteração?") == 0) { //Sim
+            vendedor.setNome(txtNome.getText());
+            vendedor.setEndereco(txtEndereco.getText());
+            vendedor.setCidade(txtCidade.getText());
+            vendedor.setUf(cmbUF.getSelectedItem().toString());
+            vendedor.setCep(ftxtCEP.getText().replace("-", ""));
+            vendedor.setDdd(txtDDD.getText());
+            vendedor.setTelefone(txtTelefone.getText());
+            vendedor.setSalarioBase(Double.parseDouble(txtSalBase.getText()));
+
+            daoVendedor.alterar(vendedor);
+            JOptionPane.showMessageDialog(null, "Vendedor alterado com sucesso", "Alteração", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        limparCampos();
+        ftxtCPF.setEnabled(true);
+        ftxtCPF.requestFocus();
+        txtNome.setEnabled(false);
+        txtEndereco.setEnabled(false);
+        txtCidade.setEnabled(false);
+        cmbUF.setEnabled(false);
+        ftxtCEP.setEnabled(false);
+        txtDDD.setEnabled(false);
+        txtTelefone.setEnabled(false);
+        txtSalBase.setEnabled(false);
+        txtTaxaComissao.setEnabled(false);
+        
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        btnIncluir.setEnabled(false);
+        btnConsultar.setEnabled(true);
+        
+
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (JOptionPane.showConfirmDialog(null, "Confirma a exclusão do vendedor: " + txtNome.getText(), "Exclusão", JOptionPane.INFORMATION_MESSAGE) == 0) { //Sim
+            daoVendedor.excluir(vendedor);
+
+            limparCampos();
+            ftxtCPF.setEnabled(true);
+            ftxtCPF.requestFocus();
+            txtNome.setEnabled(false);
+            txtEndereco.setEnabled(false);
+            txtCidade.setEnabled(false);
+            cmbUF.setEnabled(false);
+            ftxtCEP.setEnabled(false);
+            txtDDD.setEnabled(false);
+            txtTelefone.setEnabled(false);
+            txtSalBase.setEnabled(false);
+            txtTaxaComissao.setEnabled(false);
+            
+            btnConsultar.setEnabled(true);
+            btnAlterar.setEnabled(false);
+            btnExcluir.setEnabled(false);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+/**
+ * @param args the command line arguments
+ */
+public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -262,16 +465,32 @@ public class GuiVendedor extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                }
+                
+
+}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GuiVendedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GuiVendedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GuiVendedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GuiVendedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GuiVendedor.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } 
+
+catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GuiVendedor.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } 
+
+catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GuiVendedor.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } 
+
+catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GuiVendedor.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -314,5 +533,83 @@ public class GuiVendedor extends javax.swing.JFrame {
         URL url = this.getClass().getResource("/fatec/poo/view/icon/vendedor.png");
         Image imagemTitulo = Toolkit.getDefaultToolkit().getImage(url);
         this.setIconImage(imagemTitulo);
+    }
+    
+    public void limparCampos() {
+        ftxtCPF.setText("");
+        txtNome.setText("");
+        txtEndereco.setText("");
+        txtCidade.setText("");
+        cmbUF.setSelectedItem("");
+        ftxtCEP.setText("");
+        txtDDD.setText("");
+        txtTelefone.setText("");
+        txtSalBase.setText("");
+        txtTaxaComissao.setText("");
+    }
+    
+    public boolean validaCPF(String cpf) {
+        String cpfSemMascara;
+
+        //Remove a máscara do JFormattedField
+        cpfSemMascara = ftxtCPF.getText();
+        cpfSemMascara = cpfSemMascara.replace(".", "");
+        cpfSemMascara = cpfSemMascara.replace("-", "");
+
+        //Considera-se erro CPF's formados por uma sequência de números iguais
+        if (cpfSemMascara.equals("00000000000") || cpfSemMascara.equals("11111111111")
+                || cpfSemMascara.equals("22222222222") || cpfSemMascara.equals("33333333333")
+                || cpfSemMascara.equals("44444444444") || cpfSemMascara.equals("55555555555")
+                || cpfSemMascara.equals("66666666666") || cpfSemMascara.equals("77777777777")
+                || cpfSemMascara.equals("88888888888") || cpfSemMascara.equals("99999999999")
+                || (cpfSemMascara.length() != 11)) {
+            return false;
+        }
+        char dig10, dig11;
+        int sm, i, r, num, peso;
+
+        try {
+            //Cálculo do primeiro dígito verificador
+            sm = 0;
+            peso = 10;
+            for (i = 0; i < 9; i++) {
+                //Converte o i-ésimo caractere do CPF em um número (48 é a posição de '0' na tabela ASCII)
+                num = (int) (cpfSemMascara.charAt(i) - 48);
+                sm = sm + (num * peso);
+                peso = peso - 1;
+            }
+
+            r = 11 - (sm % 11);
+            if ((r == 10) || (r == 11)) {
+                dig10 = '0';
+            } else {
+                dig10 = (char) (r + 48); //Converte no respectivo caractere numérico
+            }
+
+            //Cálculo do segundo dígito verificador
+            sm = 0;
+            peso = 11;
+            for (i = 0; i < 10; i++) {
+                num = (int) (cpfSemMascara.charAt(i) - 48);
+                sm = sm + (num * peso);
+                peso = peso - 1;
+            }
+
+            r = 11 - (sm % 11);
+            if ((r == 10) || (r == 11)) {
+                dig11 = '0';
+            } else {
+                dig11 = (char) (r + 48);
+            }
+
+            //Verifica se os dígitos calculados conferem com os dígitos informados
+            if ((dig10 == cpfSemMascara.charAt(9)) && (dig11 == cpfSemMascara.charAt(10))) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (InputMismatchException erro) {
+            return false;
+        }
     }
 }

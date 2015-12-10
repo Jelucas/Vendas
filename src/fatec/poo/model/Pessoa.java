@@ -6,6 +6,10 @@ public class Pessoa {
     private String endereco;
     private String cidade;
     private String cep;
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
     private String uf;
     private String ddd;
     private String telefone;

@@ -26,6 +26,10 @@ public class Cliente extends Pessoa{
         pedidos.add(p);
     }
 
+    public void setLimiteCred(double limiteCred) {
+        this.limiteCred = limiteCred;
+    }
+
     public double getLimiteCred() {
         return limiteCred;
     }

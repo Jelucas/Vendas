@@ -13,8 +13,6 @@ public class Vendedor extends Pessoa {
         pedidos = new ArrayList<Pedido>();
     }
     
-   
-    
     public ArrayList<Pedido> getPedidos(){
         return pedidos;
     }
@@ -36,7 +34,8 @@ public class Vendedor extends Pessoa {
     }
 
     public void setComissao(double comissao) {
-        this.comissao = comissao/100;
+        this.comissao = comissao;
     }
+    
     
 }
